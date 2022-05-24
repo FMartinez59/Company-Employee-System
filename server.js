@@ -1,5 +1,4 @@
 const inquirer = require("inquirer");
-const fs = require("fs");
 const connection = require("./db/connection");
 
 function menuPrompts() {
@@ -71,6 +70,7 @@ function menuPrompts() {
 
 function viewDepartments() {
   console.log("showing all departments.../n");
+  //selects everything from departments table
   connection.query("SELECT * FROM department", function (err, data) {
     console.table(data);
     menuPrompts();
@@ -79,6 +79,7 @@ function viewDepartments() {
 
 function viewRoles() {
   console.log("showing all roles.../n");
+  //selects everything from roles table
   connection.query("SELECT * FROM roles", function (err, data) {
     console.table(data);
     menuPrompts();
@@ -87,6 +88,7 @@ function viewRoles() {
 
 function viewEmployees() {
   console.log("showing all employees.../n");
+  //selects everything from employees table
   connection.query("SELECT * FROM employee", function (err, data) {
     console.table(data);
     menuPrompts();
@@ -101,11 +103,17 @@ function addDepartment() {
         message: "What department would you like to add?",
         name: "newDepart",
       },
+      {
+        type: "input",
+        message: "What is the department id?",
+        name: "newDepartId",
+      },
     ])
     .then(function (res) {
+      //grabs input and adds it to the db
       connection.query(
-        "INSERT INTO department (name) VALUES (?)",
-        [res.department],
+        `INSERT INTO department (id, name) VALUES (?)`,
+        [res.newDepartId, res.newDepart],
         function (err, data) {
           if (err) throw err;
           console.table("Successfully Inserted");
@@ -115,13 +123,44 @@ function addDepartment() {
     });
 }
 
-function addRole() {}
+function addRole() {
+  inquirer
+    .prompt([
+      {
+        message: "enter title:",
+        type: "input",
+        name: "title",
+      },
+      {
+        message: "enter salary:",
+        type: "number",
+        name: "salary",
+      },
+      {
+        message: "enter department ID:",
+        type: "number",
+        name: "department_id",
+      },
+    ])
+    .then(function (res) {
+      //adds user input to roles table
+      connection.query(
+        "INSERT INTO roles (id, title, salary, department_id) values (?, ?, ?)",
+        [res.id, res.title, res.salary, res.department_id],
+        function (err, data) {
+          console.table(data);
+        }
+      );
+      menuPrompts();
+    });
+}
 
 function addEmployee() {}
-
+//stops application
 function quit() {
   process.exit();
 }
+//runs on start
 function init() {
   menuPrompts();
 }
