@@ -112,7 +112,8 @@ function addDepartment() {
     .then(function (res) {
       //grabs input and adds it to the db
       connection.query(
-        `INSERT INTO department (id, name) VALUES (?)`,
+        //adds to db using sql syntax and parameterized query after it
+        `INSERT INTO department (id, name) VALUES (?, ?)`,
         [res.newDepartId, res.newDepart],
         function (err, data) {
           if (err) throw err;
@@ -127,12 +128,17 @@ function addRole() {
   inquirer
     .prompt([
       {
-        message: "enter title:",
+        message: "enter role id:",
+        type: "number",
+        name: "role_id",
+      },
+      {
+        message: "enter role title:",
         type: "input",
         name: "title",
       },
       {
-        message: "enter salary:",
+        message: "enter role salary:",
         type: "number",
         name: "salary",
       },
@@ -145,8 +151,9 @@ function addRole() {
     .then(function (res) {
       //adds user input to roles table
       connection.query(
-        "INSERT INTO roles (id, title, salary, department_id) values (?, ?, ?)",
-        [res.id, res.title, res.salary, res.department_id],
+        //adds to db using sql syntax and parameterized query after it
+        "INSERT INTO roles (id, title, salary, department_id) values (?, ?, ?, ?)",
+        [res.role_id, res.id, res.title, res.salary, res.department_id],
         function (err, data) {
           console.table(data);
         }
@@ -155,7 +162,43 @@ function addRole() {
     });
 }
 
-function addEmployee() {}
+function addEmployee() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "first_Name",
+        message: "What is the employees first name?",
+      },
+      {
+        type: "input",
+        name: "last_Name",
+        message: "What is the employees last name?",
+      },
+      {
+        type: "number",
+        name: "role_Id",
+        message: "What is the employees role ID",
+      },
+      {
+        type: "number",
+        name: "manager_Id",
+        message: "What is the employees manager's ID?",
+      },
+    ])
+    .then(function (res) {
+      connection.query(
+        //adds to db using sql syntax and parameterized query after it
+        "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)",
+        [res.first_Name, res.last_Name, res.role_Id, res.manager_Id],
+        function (err, data) {
+          if (err) throw err;
+          console.table("Successfully Inserted");
+          menuPrompts();
+        }
+      );
+    });
+}
 //stops application
 function quit() {
   process.exit();

@@ -1,8 +1,8 @@
-INSERT INTO department (id, name)
+INSERT INTO department ( name)
 VALUES 
-(100, "FrontEndD"),
-(200, "BackEndD"),
-(300, "ProjectManagerD");
+("FrontEndD"),
+("BackEndD"),
+("ProjectManagerD");
 
 
 INSERT INTO roles (id, title, salary, department_id)
@@ -23,6 +23,6 @@ VALUES
 (3, "Michael", "Sackyta", 3, 785),
 (4, "Edwin", "Hernandez", 4, 528),
 (5, "Alexis", "Garcia", 5, 478),
-(6, "Thomas", "Rameriez", 6, 341),
+(6, "Thomas", "Ramriez", 6, 341),
 (7, "Sebastion", "Plata", 7, 951),
 (8, "Alexander", "Jimenez", 8, 168);
