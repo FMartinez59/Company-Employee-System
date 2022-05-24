@@ -1,14 +1,7 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const connection = require("./db/connection");
-//switch
-// connection.query('SELECT * FROM roles', function (err, results) {
-//     console.log(results);
-//   });
 
-//   connection.query('INSERT INTO employee (first_name, last_name, manager_id) VALUES ("David", "Johnson", 146)', function (err, results) {
-//     console.log(results);
-//   });
 function menuPrompts() {
   inquirer
     .prompt([
@@ -76,13 +69,51 @@ function menuPrompts() {
     });
 }
 
-function viewDepartments() {}
+function viewDepartments() {
+  console.log("showing all departments.../n");
+  connection.query("SELECT * FROM department", function (err, data) {
+    console.table(data);
+    menuPrompts();
+  });
+}
 
-function viewRoles() {}
+function viewRoles() {
+  console.log("showing all roles.../n");
+  connection.query("SELECT * FROM roles", function (err, data) {
+    console.table(data);
+    menuPrompts();
+  });
+}
 
-function viewEmployees() {}
+function viewEmployees() {
+  console.log("showing all employees.../n");
+  connection.query("SELECT * FROM employee", function (err, data) {
+    console.table(data);
+    menuPrompts();
+  });
+}
 
-function addDepartment() {}
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What department would you like to add?",
+        name: "newDepart",
+      },
+    ])
+    .then(function (res) {
+      connection.query(
+        "INSERT INTO department (name) VALUES (?)",
+        [res.department],
+        function (err, data) {
+          if (err) throw err;
+          console.table("Successfully Inserted");
+          menuPrompts();
+        }
+      );
+    });
+}
 
 function addRole() {}
 
@@ -91,3 +122,7 @@ function addEmployee() {}
 function quit() {
   process.exit();
 }
+function init() {
+  menuPrompts();
+}
+init();
