@@ -1,14 +1,17 @@
 const inquirer = require("inquirer");
 const connection = require("./db/connection");
-const figlet = require("figlet")
-figlet('EMPLOYEE SYSTEM', function(err, data) {
+const figlet = require("figlet");
+const table = require("table");
+
+figlet("EMPLOYEE SYSTEM", function (err, data) {
   if (err) {
-      console.log('Something went wrong...');
-      console.dir(err);
-      return;
+    console.log("Something went wrong...");
+    console.dir(err);
+    return;
   }
-  console.log(data)
+  console.log(data);
 });
+
 function menuPrompts() {
   inquirer
     .prompt([
