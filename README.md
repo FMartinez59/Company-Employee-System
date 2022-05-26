@@ -3,7 +3,7 @@
 ## The purpose of this challenge is to build a command-line application from scratch to manage a company's employee database, using Node.js, Inquirer, and MySQL. Since developers frequently have to create interfaces that allow non-developers to easily view and interact with information stored in databases. These interfaces are called content management systems (CMS).
 
 ## Heres how it works
-
+https://drive.google.com/file/d/1vIvx_iP3TYHY_51DrDqtR_rERG8MPYoK/view
 
 ## POINTS OF INTEREST 
 - GIVEN a command-line application that accepts user input
