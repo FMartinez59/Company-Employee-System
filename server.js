@@ -1,6 +1,14 @@
 const inquirer = require("inquirer");
 const connection = require("./db/connection");
-
+const figlet = require("figlet")
+figlet('EMPLOYEE SYSTEM', function(err, data) {
+  if (err) {
+      console.log('Something went wrong...');
+      console.dir(err);
+      return;
+  }
+  console.log(data)
+});
 function menuPrompts() {
   inquirer
     .prompt([
@@ -35,6 +43,10 @@ function menuPrompts() {
             value: "ADD_EMPLOYEE",
           },
           {
+            name: "Update Employee Role",
+            value: "UPDATE_EMPLOYEE_ROLE",
+          },
+          {
             name: "Quit",
             value: "QUIT",
           },
@@ -61,6 +73,9 @@ function menuPrompts() {
           break;
         case "ADD_EMPLOYEE":
           addEmployee();
+          break;
+        case "UPDATE_EMPLOYEE_ROLE":
+          updateEmployeeRole();
           break;
         default:
           quit();
@@ -153,7 +168,7 @@ function addRole() {
       connection.query(
         //adds to db using sql syntax and parameterized query after it
         "INSERT INTO roles (id, title, salary, department_id) values (?, ?, ?, ?)",
-        [res.role_id, res.id, res.title, res.salary, res.department_id],
+        [res.roles_id, res.id, res.title, res.salary, res.department_id],
         function (err, data) {
           console.table(data);
         }
@@ -199,6 +214,34 @@ function addEmployee() {
       );
     });
 }
+
+function updateEmployeeRole() {
+  inquirer
+    .prompt([
+      {
+        message:
+          "which employee would you like to update? (use first name only for now)",
+        type: "input",
+        name: "name",
+      },
+      {
+        message: "enter the new role ID:",
+        type: "number",
+        name: "role_id",
+      },
+    ])
+    .then(function (res) {
+      connection.query(
+        "UPDATE employee SET role_id = ? WHERE first_name = ?",
+        [res.role_id, res.name],
+        function (err, data) {
+          console.table(data);
+        }
+      );
+      menuPrompts();
+    });
+}
+
 //stops application
 function quit() {
   process.exit();
